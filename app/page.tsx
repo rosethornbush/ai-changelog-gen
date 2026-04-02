@@ -1,19 +1,19 @@
+import { FormCard } from "@/components/app/FormCard"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardFooter } from "@/components/ui/card"
 
 export default function Page() {
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
-        </div>
-        <div className="font-mono text-xs text-muted-foreground">
-          (Press <kbd>d</kbd> to toggle dark mode)
-        </div>
-      </div>
-    </div>
+    <main className="mx-auto flex min-h-svh w-full max-w-5xl flex-col gap-12 py-24 font-sans">
+      <header className="flex flex-col gap-2">
+        <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
+          Changelog Generator
+        </h2>
+        <p className="text-xl text-muted-foreground">
+          Turn recent commits into release notes.
+        </p>
+      </header>
+      <FormCard />
+    </main>
   )
 }
