@@ -1,6 +1,4 @@
-import { FormCard } from "@/components/app/FormCard"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter } from "@/components/ui/card"
+import { ChangelogGenerator } from "@/components/app/ChangelogGenerator"
 
 export default function Page() {
   return (
@@ -13,7 +11,7 @@ export default function Page() {
           Turn recent commits into release notes.
         </p>
       </header>
-      <FormCard />
+      <ChangelogGenerator />
     </main>
   )
 }
