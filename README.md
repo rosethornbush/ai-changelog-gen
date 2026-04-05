@@ -1,21 +1,44 @@
-# Next.js template
+# ai changelog generator
 
-This is a Next.js template with shadcn/ui.
+paste a github repo, pick a date range, get a changelog. publish it and share the url.
 
-## Adding components
-
-To add components to your app, run the following command:
+## setup
 
 ```bash
-npx shadcn@latest add button
+cp .env.example .env.local
+pnpm install
+pnpm drizzle-kit push
+pnpm dev
 ```
 
-This will place the ui components in the `components` directory.
+### env
 
-## Using components
+| variable             | required | description                                  |
+| -------------------- | -------- | -------------------------------------------- |
+| `OPENROUTER_API_KEY` | yes      | from [openrouter.ai](https://openrouter.ai)  |
+| `GH_AUTH_TOKEN`      | no       | github pat, helps with rate limits           |
+| `TURSO_DATABASE_URL` | yes      | defaults to `file:local.db` for local sqlite |
 
-To use the components in your app, import them as follows:
+## why these tools
 
-```tsx
-import { Button } from "@/components/ui/button";
-```
+**openrouter + gemma 4**: no vendor lock in, gemma 4 follows instructions well and outputs clean markdown.
+
+**turso**: `file:local.db` just works locally, swap to hosted turso in prod without changing code.
+
+**drizzle**: type safe, lightweight, migrations as code.
+
+**mdx**: ai output renders as styled prose immediately, can override components for headings and code blocks.
+
+## how it works
+
+date presets (today, past 3/7/14/30 days) because "what shipped this week" is the common case.
+
+you can edit the ai output before publishing because it's not always right.
+
+publishing creates a shareable url at `/{id}`. the url is the deliverable, not a copy paste box.
+
+public page shows the repo owner avatar and a link to github so readers know what they're looking at.
+
+## ai tools used
+
+claude helped write the prompts in `lib/ai.ts`.
