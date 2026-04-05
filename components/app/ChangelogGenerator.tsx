@@ -38,6 +38,7 @@ import { toast } from "sonner"
 import { ChatAssistantMessage } from "@openrouter/sdk/models"
 import { Badge } from "../ui/badge"
 import Link from "next/link"
+import { parseRepo } from "@/lib/parseRepo"
 
 const DateFormatter = new Intl.DateTimeFormat("en-US", {
   month: "2-digit",
@@ -76,7 +77,7 @@ export function ChangelogGenerator() {
       return fetch("/api/generate", {
         method: "POST",
         body: JSON.stringify({
-          repo,
+          repo: parseRepo(repo),
           ...dates,
         }),
       }).then((r) => r.json())
@@ -115,7 +116,7 @@ export function ChangelogGenerator() {
         body: JSON.stringify({
           id,
           content,
-          repo,
+          repo: parseRepo(repo!),
         }),
       }).then((r) => r.json())
     },
@@ -254,9 +255,19 @@ export function ChangelogGenerator() {
             </form>
           </CardContent>
           <CardFooter>
-            <Button form={formId} type="submit" size="lg" className="w-full">
+            <Button
+              form={formId}
+              type="submit"
+              size="lg"
+              className="w-full"
+              disabled={generateMutation.isPending}
+            >
               <SparkleIcon weight="duotone" />
-              <span>Generate Changelog</span>
+              <span>
+                {generateMutation.isPending
+                  ? "Generating..."
+                  : "Generate Changelog"}
+              </span>
             </Button>
           </CardFooter>
         </Card>
@@ -314,9 +325,10 @@ export function ChangelogGenerator() {
                         </Button>
                         {changelogId ? (
                           <Button
+                            nativeButton={false}
                             render={
                               <Link
-                                href={`/changelog/${changelogId}`}
+                                href={`/${changelogId}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                               />

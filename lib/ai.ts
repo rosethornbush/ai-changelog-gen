@@ -16,7 +16,8 @@ Commits:
 ${commits.map(formatCommit).join('\n')}
 
 Use this structure:
-# v{version} — {punchy title}
+# ${new Date(to).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} — {punchy title}
+
 
 {1-2 sentence prose summary}
 
@@ -34,7 +35,10 @@ Use this structure:
 
 Rules:
 - Only include sections that have relevant commits
+- Prioritize Features and Fixes — these are what users care about most
+- Only include an Internal section if there's something genuinely notable (major perf improvement, infra change that affects reliability). Skip it entirely for routine refactors, CI tweaks, or dependency bumps
 - Skip merge commits, version bumps, typo fixes unless significant
 - Use file stats to write specific bullets — mention flag names, function names, affected areas
+- Never use LaTeX or math notation. Write mathematical expressions as plain text (e.g. "less than 16" or "< 16")
 - Write for developers reading a public changelog`
 }

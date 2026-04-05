@@ -2,7 +2,7 @@ import { ChangelogGenerator } from "@/components/app/ChangelogGenerator"
 
 export default function Page() {
   return (
-    <main className="mx-auto flex min-h-svh w-full max-w-5xl flex-col gap-12 py-24 font-sans">
+    <>
       <header className="flex flex-col gap-2">
         <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
           Changelog Generator
@@ -12,6 +12,6 @@ export default function Page() {
         </p>
       </header>
       <ChangelogGenerator />
-    </main>
+    </>
   )
 }

@@ -8,7 +8,7 @@ export function MDXContent({ source }: { source: string }) {
   const promise = useMemo(() => evaluate(source, { ...runtime }), [source])
   const { default: Content } = use(promise)
   return (
-    <section className="prose prose-base dark:prose-invert">
+    <section className="prose prose-base max-w-none dark:prose-invert">
       <Content />
     </section>
   )

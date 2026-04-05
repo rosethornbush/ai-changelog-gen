@@ -32,7 +32,9 @@ export default function RootLayout({
       <body>
         <ThemeProvider>
           <QueryClient>
-            {children}
+            <main className="mx-auto flex min-h-svh w-full max-w-5xl flex-col gap-12 py-8 font-sans">
+              {children}
+            </main>
             <Toaster />
           </QueryClient>
         </ThemeProvider>
