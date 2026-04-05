@@ -70,20 +70,22 @@ export function ChangelogGenerator() {
     Error,
     z.infer<typeof formSchema>
   >({
-    mutationFn: ({ repo, dates }) => {
+    mutationFn: async ({ repo, dates }) => {
       setChangelog(null)
       setChangelogId(null)
 
-      return fetch("/api/generate", {
+      const r = await fetch("/api/generate", {
         method: "POST",
         body: JSON.stringify({
           repo: parseRepo(repo),
           ...dates,
         }),
-      }).then((r) => r.json())
+      })
+      const json = await r.json()
+      if (!r.ok) throw new Error(json.error ?? "Failed to generate changelog")
+      return json
     },
     onSuccess: ({ content }) => {
-      console.log(content)
       setChangelog(content)
     },
   })
@@ -150,7 +152,9 @@ export function ChangelogGenerator() {
                 <form.Field name="repo">
                   {(field) => {
                     const isInvalid =
-                      field.state.meta.isTouched && !field.state.meta.isValid
+                      (field.state.meta.isTouched &&
+                        !field.state.meta.isValid) ||
+                      generateMutation.isError
                     return (
                       <Field data-invalid={isInvalid}>
                         <FieldLabel htmlFor={field.name}>
@@ -162,7 +166,10 @@ export function ChangelogGenerator() {
                             name={field.name}
                             value={field.state.value}
                             onBlur={field.handleBlur}
-                            onChange={(e) => field.handleChange(e.target.value)}
+                            onChange={(e) => {
+                              field.handleChange(e.target.value)
+                              generateMutation.reset()
+                            }}
                             aria-invalid={isInvalid}
                             placeholder="vercel/next.js"
                             autoComplete="off"
@@ -171,8 +178,16 @@ export function ChangelogGenerator() {
                             <GithubLogoIcon weight="duotone" />
                           </InputGroupAddon>
                         </InputGroup>
-                        {isInvalid && (
-                          <FieldError errors={field.state.meta.errors} />
+                        {field.state.meta.isTouched &&
+                          !field.state.meta.isValid && (
+                            <FieldError errors={field.state.meta.errors} />
+                          )}
+                        {generateMutation.isError && (
+                          <FieldError
+                            errors={[
+                              { message: generateMutation.error.message },
+                            ]}
+                          />
                         )}
                       </Field>
                     )
@@ -229,9 +244,10 @@ export function ChangelogGenerator() {
                         {[
                           { label: "Today", value: 0 },
                           { label: "Yesterday", value: 1 },
-                          { label: "3 Days Ago", value: 3 },
-                          { label: "A Week Ago", value: 7 },
-                          { label: "Two Weeks Ago", value: 14 },
+                          { label: "Past 3 Days", value: 3 },
+                          { label: "Past Week", value: 7 },
+                          { label: "Past Two Weeks", value: 14 },
+                          { label: "Past Month", value: 30 },
                         ].map((preset) => (
                           <Button
                             key={preset.value}

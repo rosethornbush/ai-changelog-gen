@@ -14,6 +14,7 @@ import { GithubLogoIcon } from "@phosphor-icons/react/dist/ssr"
 import { headers } from "next/headers"
 import Image from "next/image"
 import Link from "next/link"
+import { notFound } from "next/navigation"
 
 export default async function Page({
   params,
@@ -35,6 +36,8 @@ export default async function Page({
       )
     },
   })
+
+  if (!data || data.error) notFound()
 
   const [owner] = data.repo.split("/")
 
