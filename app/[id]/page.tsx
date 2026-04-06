@@ -69,7 +69,13 @@ export default async function Page({
           <Button
             variant="secondary"
             nativeButton={false}
-            render={<Link href={`https://github.com/${data.repo}`} />}
+            render={
+              <Link
+                href={`https://github.com/${data.repo}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              />
+            }
           >
             <GithubLogoIcon weight="duotone" />
             <span>Visit on GitHub</span>
