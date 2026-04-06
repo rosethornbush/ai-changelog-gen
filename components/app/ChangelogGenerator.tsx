@@ -225,6 +225,7 @@ export function ChangelogGenerator() {
                         {(dates) => (
                           <Calendar
                             mode="range"
+                            resetOnSelect
                             defaultMonth={TODAY}
                             selected={dates}
                             disabled={{ after: TODAY }}
